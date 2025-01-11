@@ -24,7 +24,7 @@ TODO: Make the bot public accessible/flexible (maybe with json user settings?)
 3. Run `npm install`
 4. Add credentials in a `.env` file. See `.env.example`
 5. Run `npm start` or `node src/index.js` 
-6. Interact with Chedis via text message on Discord (!archive) and attach any image to upload.
+6. Interact with Chedis via text message on Discord (!archive) on a already existing message with image or attach one.
 
 ## License
 This software is published under the MIT license

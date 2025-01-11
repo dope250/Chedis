@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
-const axios = require('axios');
+const axios = require('axios'); //Using axios for POST
 const imageToBase64 = require('image-to-base64');  // Helper to convert image to base64
 
 // Initialize the bot client
@@ -39,7 +39,7 @@ client.on('messageCreate', async (message) => {
                 try {
                     // Fetch the image and convert it to base64
                     const imageBase64 = await imageToBase64(imageUrl);
-    
+
                     // Prepare the data to send to Chevereto
                     const formData = new URLSearchParams();
                     formData.append('key', process.env.CHEVERETO_API);  // API key
