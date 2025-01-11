@@ -4,7 +4,7 @@
 ## Chevereto + Discord
 Discord Bot which automatically uploads any image attachments via Chevereto API when called with !archive. 
 
-On success it reacts with on the message. 
+On success it reacts with ✅ on the message. 
 
 On error, it will write a message into the channel.
 
@@ -15,15 +15,16 @@ TODO: Make the bot public accessible/flexible (maybe with json user settings?)
 
 - [Node.js](http://nodejs.org/)
 - [Discord](https://discordapp.com/) account
+- Bot Permissions: 67648
 
 ## Installation Steps
 
-0. Register new bot with Discord Developer Portal 
-1. Clone repo
-2. Run `npm install`
-3. Add credentials in a `.env` file. See `.env.example`
-3. Run `npm start` or `node src/index.js` 
-4. Interact with Chedis via text message on Discord (!archive) and attach any image to upload.
+1. Register new bot with Discord Developer Portal 
+2. Clone repo
+3. Run `npm install`
+4. Add credentials in a `.env` file. See `.env.example`
+5. Run `npm start` or `node src/index.js` 
+6. Interact with Chedis via text message on Discord (!archive) and attach any image to upload.
 
 ## License
 This software is published under the MIT license

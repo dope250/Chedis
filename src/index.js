@@ -21,6 +21,12 @@ client.on('messageCreate', async (message) => {
 
     // Check if the message starts with !archive
     if (message.content.toLowerCase() === '!archive') {
+
+        // Check if message is a reply to another with attachment and load these instead
+        if (message.reference) {
+            message = await message.channel.messages.fetch(message.reference.messageId);
+        };
+
         // Check if there is an attachment in the message
         if (message.attachments.size > 0) {
             // Get the first attachment
@@ -39,14 +45,14 @@ client.on('messageCreate', async (message) => {
                     formData.append('key', process.env.CHEVERETO_API);  // API key
                     formData.append('album_id', process.env.CHEVERETO_ALBUM_ID); // Album ID to upload to
                     formData.append('image', imageBase64);  // Base64 encoded image
-                        
+
                     // Send the image to Chevereto API
                     const response = await axios.post(process.env.CHEVERETO_URL + '/api/1/upload', formData, {
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded'
                         }
                     });
-    
+
                     // Check if the response is successful and send the URL
                     if (response.data.success) {
                         await message.react('✅');
@@ -57,9 +63,8 @@ client.on('messageCreate', async (message) => {
                     console.error('Error processing image:', error);
                     message.channel.send('Failed to process the image. Please try again.');
                 }
-
             });
-            
+
         } else {
             message.channel.send('Please attach an image to upload!');
         }
