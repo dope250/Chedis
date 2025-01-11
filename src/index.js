@@ -1,53 +1,67 @@
-require('dotenv').config()
-const Discord = require('discord.js')
-const config = require('../config.json')
+require('dotenv').config();
+const { Client, GatewayIntentBits } = require('discord.js');
+const axios = require('axios');
+const imageToBase64 = require('image-to-base64');  // Helper to convert image to base64
 
-const bot = new Discord.Client()
-const { TOKEN } = process.env
+// Initialize the bot client
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
-const { prefix, name } = config
+// Log in to Discord with your app's token
+client.login(process.env.TOKEN);
 
-bot.login(TOKEN)
+// When the bot is ready
+client.once('ready', () => {
+    console.log(`Logged in as ${client.user.tag}`);
+});
 
-bot.once('ready', () => {
-    console.info(`Logged in as ${bot.user.tag}!`) // eslint-disable-line no-console
-})
+// Command handler for messages
+client.on('messageCreate', async (message) => {
+    // Ignore messages from the bot itself
+    if (message.author.bot) return;
 
-bot.on('message', message => {
-    // ping command without a prefix (exact match)
-    if (message.content === 'ping') {
-        const delay = Date.now() - message.createdAt
-        message.reply(`**pong** *(delay: ${delay}ms)*`)
-        return
-    }
+    // Check if the message starts with !archive
+    if (message.content.toLowerCase() === '!archive') {
+        // Check if there is an attachment in the message
+        if (message.attachments.size > 0) {
+            // Get the first attachment
+            const attachment = message.attachments.first();
+            const imageUrl = attachment.url;
 
-    // ignore all other messages without our prefix
-    if (!message.content.startsWith(prefix)) return
+            message.attachments.forEach(async (attachment) => {
+                const imageUrl = attachment.url;
 
-    // let the bot introduce itself (exact match)
-    if (message.content === `${prefix}who`) {
-        message.channel.send(`My name is ${name} and I was created to serve!`)
-        return
-    }
+                try {
+                    // Fetch the image and convert it to base64
+                    const imageBase64 = await imageToBase64(imageUrl);
+    
+                    // Prepare the data to send to Chevereto
+                    const formData = new URLSearchParams();
+                    formData.append('key', process.env.CHEVERETO_API);  // API key
+                    formData.append('album_id', process.env.CHEVERETO_ALBUM_ID); // Album ID to upload to
+                    formData.append('image', imageBase64);  // Base64 encoded image
+                        
+                    // Send the image to Chevereto API
+                    const response = await axios.post(process.env.CHEVERETO_URL + '/api/1/upload', formData, {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    });
+    
+                    // Check if the response is successful and send the URL
+                    if (response.data.success) {
+                        await message.react('✅');
+                    } else {
+                        message.channel.send('Failed to upload the image. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error processing image:', error);
+                    message.channel.send('Failed to process the image. Please try again.');
+                }
 
-    // user info, either call with valid user name or default to info about message author
-    if (message.content.startsWith(`${prefix}whois`)) {
-        // if the message contains any mentions, pick the first as the target
-        if (message.mentions.users.size) {
-            const taggedUser = message.mentions.users.first()
-            message.channel.send(
-                `User Info: ${
-                    taggedUser.username
-                } (account created: ${taggedUser.createdAt.toUTCString()})`,
-            )
+            });
+            
         } else {
-            // default to sender if no user is mentioned
-            const { author } = message
-            message.reply(
-                `User Self Info: ${
-                    author.username
-                } (account created: ${author.createdAt.toUTCString()})`,
-            )
+            message.channel.send('Please attach an image to upload!');
         }
     }
-})
+});

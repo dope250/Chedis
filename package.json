@@ -1,8 +1,8 @@
 {
-  "name": "allbotsequal",
-  "version": "0.0.1",
-  "description": "One Bot to rule them all ... AllBotsEqual will take over menial task on my server AllBitsEqual and automate simple tasks.",
-  "author": "Konrad Abe (AllBitsEqual)",
+  "name": "chedis",
+  "version": "250111",
+  "description": "Discord Bot which automatically uploads any image attachments via Chevereto API when called with !archive. ",
+  "author": "Dominic 'dope250'",
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
@@ -13,11 +13,12 @@
   },
   "private": true,
   "dependencies": {
-    "discord.js": "^12.5.1",
+    "axios": "^1.7.9",
+    "discord.js": "^14.7.3",
     "dotenv": "^8.2.0",
+    "image-to-base64": "^2.2.0",
     "lodash": "^4.17.19"
   },
-  "optionalDependencies": {},
   "devDependencies": {
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.1",

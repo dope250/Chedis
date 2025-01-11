@@ -1,6 +1,15 @@
-# AllBotsEqual
-## All Bits Equal - Discord Bot with Node.js
-One Bot to rule them all ... AllBotsEqual will take over menial task on my server AllBitsEqual and automate simple tasks.
+![Chedis Logo](Chedis-Logo.svg)
+
+# Chedis
+## Chevereto + Discord
+Discord Bot which automatically uploads any image attachments via Chevereto API when called with !archive. 
+
+On success it reacts with on the message. 
+
+On error, it will write a message into the channel.
+
+## Demo / Access
+TODO: Make the bot public accessible/flexible (maybe with json user settings?)
 
 ## Requirements
 
@@ -12,14 +21,9 @@ One Bot to rule them all ... AllBotsEqual will take over menial task on my serve
 0. Register new bot with Discord Developer Portal 
 1. Clone repo
 2. Run `npm install`
-3. Add Discord Bot credentials in a `.env` file
-3. Run `npm start` or `node src/index.js`
-4. Interact with your Discord bot via text messages on Discord
-
-### .env file template
-```
-TOKEN=your-bot-token
-```
+3. Add credentials in a `.env` file. See `.env.example`
+3. Run `npm start` or `node src/index.js` 
+4. Interact with Chedis via text message on Discord (!archive) and attach any image to upload.
 
 ## License
 This software is published under the MIT license
